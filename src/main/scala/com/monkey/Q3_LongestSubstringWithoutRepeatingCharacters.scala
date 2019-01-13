@@ -8,7 +8,7 @@ object Q3_LongestSubstringWithoutRepeatingCharacters extends App {
 
   println(lengthOfLongestSubstring("pwwkew"))
 
-  def lengthOfLongestSubstring(s: String): Int = {
+  def lengthOfLongestSubstringRecursion(s: String): Int = {
 
     if(s.length == 0 || s.length == 1) return s.length
 
@@ -21,18 +21,32 @@ object Q3_LongestSubstringWithoutRepeatingCharacters extends App {
       end = end +1
     }
     if(end == s.length ) return s.length
-//    else return max(lengthOfLongestSubstring(s.substring(0, s.indexOf(s.charAt(end))+1)),
-//      lengthOfLongestSubstring(s.substring(s.indexOf(s.charAt(end)) , end)),
-//      lengthOfLongestSubstring(s.substring(end, s.length)))
-    else return max(lengthOfLongestSubstring(s.substring(0, end)),
-//      lengthOfLongestSubstring(s.substring(s.indexOf(s.charAt(end)) , end)),
-      lengthOfLongestSubstring(s.substring(s.indexOf(s.charAt(end))+1, s.length)))
+    else return Math.max(lengthOfLongestSubstringRecursion(s.substring(0, end)),
+      lengthOfLongestSubstringRecursion(s.substring(s.indexOf(s.charAt(end))+1, s.length)))
 
   }
 
-  def max(a: Int, b: Int): Int = {
-    if(a>=b) a else b
+  def lengthOfLongestSubstring(s: String): Int ={
+    var length = s.length
+    var elemSet: Set[Char] = Set()
+
+    var begin, end = 0
+    var maxLength = 0
+    while(begin < length && end < length){
+      if(!elemSet.contains(s.charAt(end))){
+        elemSet += s.charAt(end)
+        end = end +1
+        maxLength = Math.max(maxLength , end - begin)
+      } else{
+        elemSet -= s.charAt(begin)
+        begin = begin + 1
+      }
+    }
+
+    maxLength
   }
+
+
 
 
 }
